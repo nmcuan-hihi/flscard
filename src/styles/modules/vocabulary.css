@@ -1,0 +1,19 @@
+.search{width:240px;border:1px solid #dfe5ee;border-radius:9px;padding:10px 12px;font:12px "DM Sans";outline:none}
+
+.table-wrap{background:white;border:1px solid #e8edf4;border-radius:13px;overflow:hidden}
+
+table{width:100%;border-collapse:collapse}
+
+th{text-align:left;font-size:9px;letter-spacing:1px;color:#8b98aa;background:#f9fafc;padding:14px 17px}
+
+td{padding:13px 17px;border-top:1px solid #eef1f5;font-size:12px;color:#53637a}
+
+td:nth-child(2){font:600 19px "Noto Sans SC";color:#263b5a}
+
+td:nth-child(3){font-weight:600}
+
+.status{font-size:10px;padding:5px 9px;border-radius:20px;background:#fff4e5;color:#b97819}
+
+.status.done{background:#e4f7ed;color:#168553}
+
+.table-action{border:0;background:none;color:#4779e6;cursor:pointer;font-size:11px}

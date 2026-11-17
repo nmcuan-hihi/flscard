@@ -1,0 +1,157 @@
+
+.segmented {
+  background: #e9edf4;
+  border-radius: 10px;
+  padding: 4px;
+  display: flex;
+  gap: 3px;
+}
+
+.mode {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  padding: 11px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6e7b8e;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.mode.active {
+  background: white;
+  color: #2e4e82;
+  box-shadow: 0 1px 4px #1b2c451c;
+  font-weight: 700;
+}
+
+.study-wrap {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.study-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #8a97a9;
+  font-size: 12px;
+  letter-spacing: .7px;
+  margin: 0 4px 13px;
+}
+
+.flash-card {
+  min-height: 400px;
+  height: 400px;
+  background: white;
+  border: 1px solid #e6ebf2;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px #1e35510d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  padding: 35px 20px;
+}
+
+.card-kicker {
+  font-size: 13px;
+  letter-spacing: 1.7px;
+  color: #98a4b4;
+  margin-bottom: 25px;
+}
+
+.card-front {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 88px;
+  color: #263b5a;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.card-back {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+.card-back-item {
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.back-meaning {
+  font-size: 44px;
+  color: #4779e6;
+  font-weight: 700;
+}
+
+.back-han {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 66px;
+  color: #263b5a;
+  font-weight: 600;
+}
+
+.back-pinyin {
+  font-size: 30px;
+  color: #8995a7;
+  font-weight: 500;
+}
+
+.flip-hint {
+  position: absolute;
+  bottom: 22px;
+  color: #a1abba;
+  font-size: 12px;
+}
+
+.card-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+@media (max-width: 700px) {
+  .card-controls {
+    flex-wrap: wrap;
+  }
+
+  .flash-card {
+    min-height: 340px;
+    height: 340px;
+  }
+
+  .card-front {
+    font-size: 66px;
+  }
+
+  .back-meaning {
+    font-size: 34px;
+  }
+
+  .back-han {
+    font-size: 52px;
+  }
+
+  .back-pinyin {
+    font-size: 24px;
+  }
+}
+
+.card-controls{display:flex;justify-content:center;gap:10px;margin-top:19px}
+
+@media (max-width: 700px) {
+  .card-controls { flex-wrap: wrap; }
+}

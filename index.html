@@ -5,7 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flashcard Chinese</title>
-  <link rel="stylesheet" href="src/style.css">
+  <link rel="stylesheet" href="src/styles/main.css">
+  <link rel="stylesheet" href="src/styles/modules/flashcard.css">
+  <link rel="stylesheet" href="src/styles/modules/quiz.css">
+  <link rel="stylesheet" href="src/styles/modules/sentence.css">
+  <link rel="stylesheet" href="src/styles/modules/vocabulary.css">
+  <link rel="stylesheet" href="src/styles/modules/settings.css">
+  <link rel="stylesheet" href="src/styles/modules/sidebar-stats.css">
 </head>
 <body>
 <div class="app-shell">
@@ -22,6 +28,13 @@
     <button class="nav-item" data-view="quiz">◉ Trắc nghiệm</button>
     <button class="nav-item" data-view="sentence">文 Ghép câu</button>
     <button class="nav-item" data-view="vocab">☷ Từ vựng</button>
+
+    <section class="stats sidebar-stats">
+      <div class="stat-card"><span>TỔNG TỪ VỰNG</span><b id="totalStat">0</b><small>Từ đã nhập</small></div>
+      <div class="stat-card"><span>ĐÃ THUỘC</span><b id="masteredStat">0</b><small>Đánh dấu đã nhớ</small></div>
+      <div class="stat-card"><span>CẦN ÔN TẬP</span><b id="reviewStat">0</b><small>Chưa thuộc</small></div>
+      <div class="stat-card"><span>TIẾN ĐỘ</span><b id="progressStat">0%</b><small>Mức độ ghi nhớ</small></div>
+    </section>
 
     <div class="sidebar-bottom">
       <div class="import-card">
@@ -43,25 +56,21 @@
       </div>
       <div class="top-actions">
         <span class="local-pill"><i></i> Đã lưu trên thiết bị</span>
+        <button id="settingsBtn" class="btn btn-outline" title="Cài đặt">⚙ Cài đặt</button>
         <button id="shuffleBtn" class="btn btn-outline">↻ Xáo trộn</button>
       </div>
     </header>
 
-    <section class="stats">
-      <div class="stat-card"><span>TỔNG TỪ VỰNG</span><b id="totalStat">0</b><small>Từ đã nhập</small></div>
-      <div class="stat-card"><span>ĐÃ THUỘC</span><b id="masteredStat">0</b><small>Đánh dấu đã nhớ</small></div>
-      <div class="stat-card"><span>CẦN ÔN TẬP</span><b id="reviewStat">0</b><small>Chưa thuộc</small></div>
-      <div class="stat-card"><span>TIẾN ĐỘ</span><b id="progressStat">0%</b><small>Mức độ ghi nhớ</small></div>
-    </section>
 
     <!-- FLASHCARD -->
     <section id="flashView" class="view">
       <div class="section-heading">
         <div><h2>Thẻ ghi nhớ</h2><p>Nhấn vào thẻ để xem đáp án.</p></div>
         <div class="segmented">
-          <button class="mode active" data-mode="han">Hán → Pinyin</button>
-          <button class="mode" data-mode="pinyin">Pinyin → Hán</button>
-        </div>
+        <button class="mode active" data-mode="han">Hán tự</button>
+        <button class="mode" data-mode="pinyin">Pinyin</button>
+        <button class="mode" data-mode="meaning">Tiếng Việt</button>
+      </div>
       </div>
 
       <div class="study-wrap">
@@ -100,6 +109,7 @@
             <option value="han-pinyin">Hán → Pinyin</option>
             <option value="pinyin-han">Pinyin → Hán</option>
             <option value="han-vi">Hán → Nghĩa tiếng Việt</option>
+            <option value="han-vi-pinyin">Hán → Việt (kèm Pinyin)</option>
             <option value="vi-han">Nghĩa tiếng Việt → Hán</option>
             <option value="pinyin-vi">Pinyin → Nghĩa tiếng Việt</option>
             <option value="vi-pinyin">Nghĩa tiếng Việt → Pinyin</option>
@@ -112,6 +122,14 @@
             <option value="10">10 câu</option>
             <option value="20">20 câu</option>
             <option value="all">Tất cả</option>
+          </select>
+        </div>
+
+        <div class="setting-field">
+          <label>NGUỒN CÂU HỎI</label>
+          <select id="quizSource">
+            <option value="all" selected>Tất cả từ</option>
+            <option value="unmastered">Chỉ từ chưa thuộc</option>
           </select>
         </div>
 
@@ -188,7 +206,7 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>#</th><th>HÁN TỰ</th><th>PINYIN</th><th>NGHĨA</th><th>TRẠNG THÁI</th><th></th></tr>
+            <tr><th>#</th><th>HÁN TỰ</th><th>PINYIN</th><th>TIẾNG VIỆT</th><th>ENGLISH</th><th>TRẠNG THÁI</th><th></th></tr>
           </thead>
           <tbody id="vocabBody"></tbody>
         </table>
@@ -198,7 +216,7 @@
     <div id="emptyState" class="empty-state hidden">
       <div class="empty-icon">文</div>
       <h2>Bắt đầu với bộ từ vựng của bạn</h2>
-      <p>Import file Excel có cột A là Hán, B là Pinyin, C là nghĩa tiếng Việt.</p>
+      <p>Import Excel: A = Hán, B = Pinyin, C = nghĩa tiếng Việt, D = English (không bắt buộc).</p>
       <button id="emptyImportBtn" class="btn btn-primary">↑ Import Excel ngay</button>
     </div>
 
@@ -207,6 +225,46 @@
   </main>
 </div>
 
+<!-- Settings dialog -->
+<div id="settingsModal" class="modal hidden" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal-header">
+      <div>
+        <div class="eyebrow">FLASHCARD PREFERENCES</div>
+        <h2 id="settingsTitle">Cài đặt</h2>
+      </div>
+      <button id="settingsClose" class="icon-button" aria-label="Đóng">×</button>
+    </div>
+    <div class="modal-section">
+      <h3>Trắc nghiệm</h3>
+      <label class="setting-toggle" for="autoNextCorrect">
+        <span>
+          <b>Tự động chuyển câu khi trả lời đúng</b>
+          <small>Khi chọn đúng, ứng dụng tự sang câu tiếp theo sau một khoảng ngắn. Nếu trả lời sai, câu hỏi sẽ được giữ lại.</small>
+        </span>
+        <input id="autoNextCorrect" type="checkbox" checked>
+      </label>
+    </div>
+    <div class="modal-footer">
+      <button id="settingsDone" class="btn btn-primary">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<!-- Core -->
+<script src="src/core/state.js"></script>
+<script src="src/core/utils.js"></script>
+<script src="src/core/storage.js"></script>
+
+<!-- Feature modules -->
+<script src="src/modules/translation/google-translate.js"></script>
+<script src="src/modules/flashcard/flashcard.js"></script>
+<script src="src/modules/quiz/quiz-settings.js"></script>
+<script src="src/modules/quiz/quiz.js"></script>
+<script src="src/modules/sentence/sentence.js"></script>
+<script src="src/modules/vocabulary/vocabulary.js"></script>
 <script src="src/app.js"></script>
+
+
 </body>
 </html>

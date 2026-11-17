@@ -1,0 +1,56 @@
+/* Bảng tổng quan thu gọn trong sidebar bên trái */
+.sidebar .sidebar-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 22px 0 18px;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar .sidebar-stats .stat-card {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 10px 9px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar .sidebar-stats .stat-card span {
+  display: block;
+  font-size: 9px;
+  line-height: 1.35;
+  letter-spacing: 0.35px;
+  overflow-wrap: anywhere;
+}
+
+.sidebar .sidebar-stats .stat-card b {
+  display: block;
+  margin-top: 5px;
+  font-size: 21px;
+  line-height: 1.15;
+}
+
+.sidebar .sidebar-stats .stat-card small {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .sidebar .sidebar-stats {
+    gap: 5px;
+    margin: 12px 0;
+  }
+
+  .sidebar .sidebar-stats .stat-card {
+    padding: 7px 6px;
+  }
+
+  .sidebar .sidebar-stats .stat-card span {
+    font-size: 8px;
+  }
+
+  .sidebar .sidebar-stats .stat-card b {
+    font-size: 17px;
+  }
+}
