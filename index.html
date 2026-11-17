@@ -1,0 +1,212 @@
+
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcard Chinese</title>
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">文</div>
+      <div><b>Hanzi</b><small>FLASHCARD STUDIO</small></div>
+    </div>
+
+    <div class="side-label">HỌC TẬP</div>
+
+    <button class="nav-item active" data-view="flash">▣ Flashcard</button>
+    <button class="nav-item" data-view="quiz">◉ Trắc nghiệm</button>
+    <button class="nav-item" data-view="sentence">文 Ghép câu</button>
+    <button class="nav-item" data-view="vocab">☷ Từ vựng</button>
+
+    <div class="sidebar-bottom">
+      <div class="import-card">
+        <div class="import-symbol">↑</div>
+        <b>Nhập từ Excel</b>
+        <p>Import từ vựng và câu tiếng Trung.</p>
+        <button id="importBtn" class="btn btn-light full">Chọn file Excel</button>
+      </div>
+      <div class="side-foot">Dữ liệu lưu trên máy tính</div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">CHINESE LEARNING</div>
+        <h1 id="pageTitle">Flashcard</h1>
+      </div>
+      <div class="top-actions">
+        <span class="local-pill"><i></i> Đã lưu trên thiết bị</span>
+        <button id="shuffleBtn" class="btn btn-outline">↻ Xáo trộn</button>
+      </div>
+    </header>
+
+    <section class="stats">
+      <div class="stat-card"><span>TỔNG TỪ VỰNG</span><b id="totalStat">0</b><small>Từ đã nhập</small></div>
+      <div class="stat-card"><span>ĐÃ THUỘC</span><b id="masteredStat">0</b><small>Đánh dấu đã nhớ</small></div>
+      <div class="stat-card"><span>CẦN ÔN TẬP</span><b id="reviewStat">0</b><small>Chưa thuộc</small></div>
+      <div class="stat-card"><span>TIẾN ĐỘ</span><b id="progressStat">0%</b><small>Mức độ ghi nhớ</small></div>
+    </section>
+
+    <!-- FLASHCARD -->
+    <section id="flashView" class="view">
+      <div class="section-heading">
+        <div><h2>Thẻ ghi nhớ</h2><p>Nhấn vào thẻ để xem đáp án.</p></div>
+        <div class="segmented">
+          <button class="mode active" data-mode="han">Hán → Pinyin</button>
+          <button class="mode" data-mode="pinyin">Pinyin → Hán</button>
+        </div>
+      </div>
+
+      <div class="study-wrap">
+        <div class="study-meta">
+          <span id="cardCount">0 / 0</span>
+          <span id="cardHint">NHỚ TỪ NÀY?</span>
+        </div>
+
+        <div id="flashCard" class="flash-card" role="button" tabindex="0">
+          <div class="card-kicker" id="cardKicker">CHỮ HÁN</div>
+          <div id="cardFront" class="card-front">你好</div>
+          <div id="cardBack" class="card-back hidden">Nǐ hǎo</div>
+          <div class="flip-hint" id="flipHint">Nhấn để lật thẻ ↻</div>
+        </div>
+
+        <div class="card-controls">
+          <button id="prevBtn" class="btn btn-outline">← Trước</button>
+          <button id="unknownBtn" class="btn btn-warn">Cần ôn lại</button>
+          <button id="knownBtn" class="btn btn-success">✓ Đã thuộc</button>
+          <button id="nextBtn" class="btn btn-primary">Tiếp theo →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quizView" class="view hidden">
+      <div class="section-heading">
+        <div><h2>Trắc nghiệm</h2><p>Tùy chỉnh hướng kiểm tra theo mục tiêu học.</p></div>
+        <div class="quiz-score">Đúng <b id="quizScore">0</b></div>
+      </div>
+
+      <div class="settings-panel">
+        <div class="setting-field">
+          <label>KIỂU KIỂM TRA</label>
+          <select id="quizMode">
+            <option value="han-pinyin">Hán → Pinyin</option>
+            <option value="pinyin-han">Pinyin → Hán</option>
+            <option value="han-vi">Hán → Nghĩa tiếng Việt</option>
+            <option value="vi-han">Nghĩa tiếng Việt → Hán</option>
+            <option value="pinyin-vi">Pinyin → Nghĩa tiếng Việt</option>
+            <option value="vi-pinyin">Nghĩa tiếng Việt → Pinyin</option>
+          </select>
+        </div>
+
+        <div class="setting-field">
+          <label>SỐ CÂU</label>
+          <select id="quizLimit">
+            <option value="10">10 câu</option>
+            <option value="20">20 câu</option>
+            <option value="all">Tất cả</option>
+          </select>
+        </div>
+
+        <button id="quizRestart" class="btn btn-primary">Bắt đầu / Làm lại</button>
+      </div>
+
+      <div class="quiz-panel">
+        <div class="quiz-progress">
+          <span id="quizCount">CÂU 1</span>
+          <span id="quizPercent">0%</span>
+        </div>
+
+        <div class="progress-track"><div id="quizBar"></div></div>
+
+        <div class="quiz-question-label">CHỌN ĐÁP ÁN ĐÚNG</div>
+        <div id="quizQuestion" class="quiz-question">你好</div>
+        <div id="answers" class="answers"></div>
+        <div id="quizFeedback" class="quiz-feedback">Chọn một đáp án bên trên</div>
+
+        <div class="quiz-footer">
+          <span id="quizDirection" class="muted"></span>
+          <button id="quizNext" class="btn btn-primary" disabled>Câu tiếp theo →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SENTENCE BUILDER -->
+    <section id="sentenceView" class="view hidden">
+      <div class="section-heading">
+        <div>
+          <h2>Ghép câu tiếng Trung</h2>
+          <p>Đọc câu tiếng Việt và sắp xếp các từ thành câu tiếng Trung.</p>
+        </div>
+        <span id="sentenceCount" class="local-pill">0 / 0</span>
+      </div>
+
+      <div class="sentence-panel">
+
+        <div class="sentence-label">DỊCH CÂU SAU SANG TIẾNG TRUNG</div>
+        <div id="sentenceVietnamese" class="sentence-vietnamese">Tôi là học sinh.</div>
+
+        <div class="sentence-label answer-label">CÂU TRẢ LỜI CỦA BẠN</div>
+
+        <div id="selectedWords" class="selected-words">
+          <span class="placeholder">Nhấn các từ bên dưới để ghép câu...</span>
+        </div>
+
+        <div class="sentence-tools">
+          <button id="sentenceUndo" class="btn btn-outline">↶ Bỏ từ cuối</button>
+          <button id="sentenceClear" class="btn btn-outline">Xóa hết</button>
+          <button id="sentenceCheck" class="btn btn-primary">Kiểm tra</button>
+        </div>
+
+        <div id="sentenceFeedback" class="sentence-feedback"></div>
+
+        <div class="sentence-label word-bank-label">CHỌN CÁC TỪ BÊN DƯỚI</div>
+        <div id="wordBank" class="word-bank"></div>
+
+        <div class="sentence-footer">
+          <button id="sentenceRestart" class="btn btn-outline">↻ Câu mới</button>
+          <button id="sentenceNext" class="btn btn-primary">Câu tiếp theo →</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VOCABULARY -->
+    <section id="vocabView" class="view hidden">
+      <div class="section-heading">
+        <div><h2>Danh sách từ vựng</h2><p id="vocabSubtitle">Các từ đã import từ Excel.</p></div>
+        <input id="searchInput" class="search" placeholder="Tìm chữ Hán hoặc Pinyin...">
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>HÁN TỰ</th><th>PINYIN</th><th>NGHĨA</th><th>TRẠNG THÁI</th><th></th></tr>
+          </thead>
+          <tbody id="vocabBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div id="emptyState" class="empty-state hidden">
+      <div class="empty-icon">文</div>
+      <h2>Bắt đầu với bộ từ vựng của bạn</h2>
+      <p>Import file Excel có cột A là Hán, B là Pinyin, C là nghĩa tiếng Việt.</p>
+      <button id="emptyImportBtn" class="btn btn-primary">↑ Import Excel ngay</button>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+  </main>
+</div>
+
+<script src="src/app.js"></script>
+</body>
+</html>

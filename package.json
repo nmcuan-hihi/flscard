@@ -1,0 +1,35 @@
+{
+  "name": "flscard",
+  "version": "1.0.0",
+  "description": "Chinese vocabulary flashcards",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^37.2.6",
+    "electron-builder": "^26.0.12"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
+  "build": {
+    "appId": "vn.giangnam.flscard",
+    "productName": "Flashcard Chinese",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "src/**/*",
+      "package.json",
+      "node_modules/**/*"
+    ]
+  }
+}
